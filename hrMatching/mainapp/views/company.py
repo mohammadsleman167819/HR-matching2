@@ -1,9 +1,10 @@
 from django.contrib.auth import login
 from django.shortcuts import redirect
-from django.views.generic import CreateView
+from django.views.generic import CreateView,UpdateView
+from django.urls import reverse
 
-from ..forms.company import CompanySignUpForm
-from ..models import User
+from ..forms.company import CompanySignUpForm,CompanyUpdateForm
+from ..models import User,Company
 
 class CompanySignUpView(CreateView):
     model = User
@@ -18,3 +19,14 @@ class CompanySignUpView(CreateView):
         user = form.save()
         login(self.request, user)
         return redirect('index')
+
+
+class CompanyUpdateView(UpdateView):
+    model = Company
+    form_class = CompanyUpdateForm
+    template_name = 'mainapp/company_update.html'
+
+    def get_success_url(self):
+        return reverse('company_update', kwargs={'pk': self.object.pk , 'changed' : 1})
+
+

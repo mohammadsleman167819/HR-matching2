@@ -5,6 +5,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from .managers import CustomUserManager
 from datetime import date
+from django.urls import reverse
+
 
 class User(AbstractUser):
     """
@@ -67,7 +69,6 @@ class Company(models.Model):
     name  = models.CharField(max_length=100, help_text='Company Name') 
     city  = models.CharField(max_length=100, help_text='Company City')
     phone = models.CharField(max_length=20, help_text='Company Phone')
-
 
     def __str__(self):
         """String for representing the Company object (in Admin site etc.)."""

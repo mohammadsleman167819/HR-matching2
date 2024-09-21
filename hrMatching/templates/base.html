@@ -21,10 +21,14 @@
                     <li class="nav-item">
                         <a class="navbar-brand" href="#">About</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="navbar-brand" href="#">Contact</a>
-                    </li>
                     {% if user.is_authenticated %}
+
+                        {% if user.is_company %}
+                        <li class="nav-item">
+                            <a class="navbar-brand" href="{%url 'company_update' user.id 0 %}">My Profile</a>
+                        </li>
+                      
+                        {%endif%}
                     <li class="nav-item">
                         <form id="logout-form" method="post" action="{% url 'logout' %}">
                             {% csrf_token %}

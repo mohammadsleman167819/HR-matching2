@@ -5,7 +5,7 @@ from ..models import Company,User
 from datetime import date
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit
-from .home import CustomUserCreationForm
+from .home import CustomUserCreationForm,CustomUserChangeForm
 
  
 class CompanySignUpForm(CustomUserCreationForm):
@@ -69,4 +69,46 @@ class CompanySignUpForm(CustomUserCreationForm):
             phone=self.cleaned_data['phone']
             )
         return user
+
+
+
+
+class CompanyUpdateForm(forms.ModelForm):
+    name  = forms.CharField(label = "Comapany Name", max_length = 100,
+                            widget = forms.TextInput(attrs={'class': 'form-control'})) 
+    
+    city = forms.CharField(label="City", max_length=50,
+                           widget = forms.TextInput(attrs={'class': 'form-control'}))
+    
+    phone = forms.CharField(label="Phone", max_length=20,min_length=10,
+                            widget = forms.TextInput(attrs={'class': 'form-control'}))
+    
+
+    def clean_phone(self):
+        data = self.cleaned_data['phone']
+
+        for char in data:
+           if not char.isdigit() and char not in '-+':
+                raise ValidationError('Phone number can only contain digits, hyphens, and plus signs.')
+
+        return data
+
+    class Meta:
+        model = Company
+        fields = ('name','city','phone')
+
+    def __init__(self,*args,**kwargs):
+        super(CompanyUpdateForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(
+                'Company Information',
+                'name',
+                'city',
+                'phone',
+            ),
+            ButtonHolder(
+                Submit('submit', 'Save', css_class='btn-primary')
+            )
+        )
 
