@@ -8,5 +8,6 @@ urlpatterns = [
     path('accounts/signup/',home.SignUpView.as_view(),name='signup'),
     path('accounts/signup/employee',employee.EmployeeSignUpView.as_view(),name='employee_signup'),
     path('accounts/signup/company',company.CompanySignUpView.as_view(),name='company_signup'),
+    path('accounts/login',home.LoginView.as_view(),name='login'),
     path("admin/", admin.site.urls),
 ]

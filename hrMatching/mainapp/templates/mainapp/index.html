@@ -1,15 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
 
+{% block title %}Home page{% endblock %}
 
-</head>
-<body>
-
+{% block content %}
     <b>hi from index</b>
     {% if user.is_authenticated%} 
     <p>User Type: {{ user.email }}</p>
     {% endif %} 
 
-    </body>
-</html>
+{% endblock %}

@@ -2,7 +2,7 @@ from django.contrib.auth import login
 from django.shortcuts import redirect
 from django.views.generic import CreateView
 
-from ..forms import EmployeeSignUpForm
+from ..forms.employee import EmployeeSignUpForm
 from ..models import User
 
 class EmployeeSignUpView(CreateView):
