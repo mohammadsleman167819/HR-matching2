@@ -38,7 +38,7 @@ class CustomLoginForm(AuthenticationForm):
                 'Log in',
                 'email',
                 'password1'
-            )
+            ),
         )
     
     

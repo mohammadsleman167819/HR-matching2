@@ -6,11 +6,7 @@
 {% block content %}
 <div class="container mt-5">
     <h2>{%block h2%}h2 block{%endblock%}</h2>
-    <form method="post">
-        {% csrf_token %}
-            {{ form|crispy }}
-            <button type="submit" class="btn btn-primary">Save</button>
-    </form>
+    {% crispy form %}
 </div>
 <script>
     // Check if the URL ends with "1"
