@@ -1,9 +1,9 @@
 from django.contrib.auth import login
-from django.shortcuts import redirect
-from django.views.generic import CreateView
+from django.shortcuts import redirect,reverse
+from django.views.generic import CreateView,UpdateView
 
-from ..forms.employee import EmployeeSignUpForm
-from ..models import User
+from ..forms.employee import EmployeeSignUpForm,EmployeeUpdateForm
+from ..models import User,Employee
 
 class EmployeeSignUpView(CreateView):
     model = User
@@ -18,3 +18,11 @@ class EmployeeSignUpView(CreateView):
         user = form.save()
         login(self.request, user)
         return redirect('index')
+
+class EmployeeUpdateView(UpdateView):
+    model = Employee
+    form_class = EmployeeUpdateForm
+    template_name = 'mainapp/employee_update.html'
+
+    def get_success_url(self):
+        return reverse('employee_update' , kwargs={ 'pk': self.object.pk ,'changed': 1})
