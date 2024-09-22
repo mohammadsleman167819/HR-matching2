@@ -6,7 +6,7 @@ from django.db import models
 from .managers import CustomUserManager
 from datetime import date
 from django.urls import reverse
-
+       
 
 class User(AbstractUser):
     """
@@ -61,7 +61,16 @@ class Employee(models.Model):
         if (today.month, today.day) < (self.dateOfBirth.month, self.dateOfBirth.day):
             age -= 1
         return str(age)
+    
+    def get_absolute_url(self):
+        return reverse('employee_detail', kwargs={'pk': self.pk})
 
+    def get_fields(self):
+        return [
+            (field.verbose_name,field.value_from_object(self))
+                for field in self._meta.fields
+                if field.verbose_name not in ['user','clusterable text','cluster']
+        ]
 
 class Company(models.Model):
 
@@ -73,3 +82,17 @@ class Company(models.Model):
     def __str__(self):
         """String for representing the Company object (in Admin site etc.)."""
         return self.name
+    
+    class Meta:
+        verbose_name = 'Company'
+        verbose_name_plural = 'Companies'
+        
+    def get_absolute_url(self):
+        return reverse('company_detail', kwargs={'pk': self.pk})
+
+    def get_fields(self):
+          return [
+        (field.verbose_name, field.value_from_object(self))
+            for field in self._meta.fields
+            if field.verbose_name not in ['user']
+    ]

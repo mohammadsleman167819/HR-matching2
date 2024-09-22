@@ -1,12 +1,6 @@
-from django.contrib.auth import login
-from django.shortcuts import redirect
-from django.views.generic import CreateView,UpdateView
-from django.urls import reverse
-
 from ..forms.company import CompanySignUpForm,CompanyUpdateForm
-from ..models import User,Company
-
-class CompanySignUpView(CreateView):
+from . import *
+class CompanySignUpView(UserPassesTestMixin,CreateView):
     model = User
     form_class = CompanySignUpForm
     template_name = 'registration/company_signup_form.html'
@@ -19,14 +13,27 @@ class CompanySignUpView(CreateView):
         user = form.save()
         login(self.request, user)
         return redirect('index')
+    
+    def test_func(self):
+        return not self.request.user.is_authenticated
+
+    def handle_no_permission(self):
+        return redirect('index')
 
 
-class CompanyUpdateView(UpdateView):
+class CompanyUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = Company
     form_class = CompanyUpdateForm
-    template_name = 'mainapp/company_update.html'
+    template_name = 'mainapp/company/company_update.html'
 
     def get_success_url(self):
         return reverse('company_update', kwargs={'pk': self.object.pk , 'changed' : 1})
 
+    def test_func(self):
+        return self.get_object().user.id == self.request.user.id
+
+
+class CompanyDetailView(DetailView):
+    model = Company
+    template_name = "mainapp/company/company_detail.html"
 

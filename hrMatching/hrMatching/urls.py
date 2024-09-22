@@ -11,3 +11,10 @@ urlpatterns = [
     path('accounts/login',home.LoginView.as_view(),name='login'),
     path("admin/", admin.site.urls),
 ]
+
+
+
+from django.conf.urls import handler403,handler404
+
+handler403 = home.custom_403_view
+handler404 = home.custom_404_view

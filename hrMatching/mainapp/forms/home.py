@@ -40,3 +40,5 @@ class CustomLoginForm(AuthenticationForm):
                 'password1'
             )
         )
+    
+    

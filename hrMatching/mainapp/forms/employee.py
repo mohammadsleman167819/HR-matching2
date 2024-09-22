@@ -7,6 +7,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit
 from .home import CustomUserCreationForm
  
+ 
 class EmployeeSignUpForm(CustomUserCreationForm):
     
     firstname = forms.CharField(label="First Name", max_length=100, help_text='Employee First Name', widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -168,6 +169,7 @@ class EmployeeUpdateForm(forms.ModelForm):
         'references', 'other')
 
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
         super(EmployeeUpdateForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout( 
@@ -194,3 +196,5 @@ class EmployeeUpdateForm(forms.ModelForm):
                 Submit('submit', 'Save', css_class='btn-primary')
             )
         )
+        
+        
