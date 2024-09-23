@@ -36,7 +36,6 @@ class EmployeeUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
 
 
 
-
 class EmployeeDetailView(DetailView):
     model = Employee
     template_name = "mainapp/employee/employee_detail.html"

@@ -2,7 +2,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth.views import LoginView
 from ..forms.home import CustomLoginForm
 from . import *
-
+ 
 class SignUpView(UserPassesTestMixin,TemplateView):
     template_name = 'registration/signup.html'
 
