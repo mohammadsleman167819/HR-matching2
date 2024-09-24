@@ -4,17 +4,8 @@ from ..views import home,company,employee
 from ..models import Employee,User,Company
 from datetime import date
 
-class signupUrlTests(TestCase):
+class UrlTests(object):
     
-    @classmethod
-    def setUpTestData(cls):
-        cls.name = 'signup'
-        cls.url = 'accounts/signup/'
-        cls.template = 'registration/signup.html'
-        cls.view_class = home.SignUpView
-        cls.view_func = None
-        cls.args = {}
-
     def test_url_status_code(self):
         url = reverse(self.name,kwargs = self.args)
         response = self.client.get(url)
@@ -40,7 +31,19 @@ class signupUrlTests(TestCase):
         self.assertEqual(url, '/' + self.url)
 
 
-class indexUrlTests(signupUrlTests):
+class SignUpUrlTests(UrlTests,TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.name = 'signup'
+        cls.url = 'accounts/signup/'
+        cls.template = 'registration/signup.html'
+        cls.view_class = home.SignUpView
+        cls.view_func = None
+        cls.args = {}
+
+
+
+class indexUrlTests(UrlTests,TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.name = 'index'
@@ -53,7 +56,7 @@ class indexUrlTests(signupUrlTests):
 
 
 
-class employeesignupUrlTests(signupUrlTests):
+class employeesignupUrlTests(UrlTests,TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.name = 'employee_signup'
@@ -64,7 +67,7 @@ class employeesignupUrlTests(signupUrlTests):
         cls.args = {}
 
 
-class companysignupUrlTests(signupUrlTests):
+class companysignupUrlTests(UrlTests,TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.name = 'company_signup'
@@ -75,7 +78,7 @@ class companysignupUrlTests(signupUrlTests):
         cls.args = {}
 
 
-class loginUrlTests(signupUrlTests):
+class loginUrlTests(UrlTests,TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.name = 'login'
@@ -86,7 +89,7 @@ class loginUrlTests(signupUrlTests):
         cls.args = {}
 
 
-class employeeupdateUrlTests(signupUrlTests):
+class employeeupdateUrlTests(UrlTests,TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = User.objects.create_user(email='test@email.com', password='123456')
@@ -111,7 +114,7 @@ class employeeupdateUrlTests(signupUrlTests):
     def setUp(self):
         self.client.login(email='test@email.com', password='123456')
   
-class companyupdateUrlTests(signupUrlTests):
+class companyupdateUrlTests(UrlTests,TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = User.objects.create_user(email='test@email.com', password='123456')
@@ -134,7 +137,7 @@ class companyupdateUrlTests(signupUrlTests):
         self.client.login(email='test@email.com', password='123456')
     
 
-class employeedetailsUrlTests(signupUrlTests):
+class employeedetailsUrlTests(UrlTests,TestCase):
     
     @classmethod
     def setUpTestData(cls):
@@ -157,7 +160,7 @@ class employeedetailsUrlTests(signupUrlTests):
         cls.args={ 'pk': cls.employee.pk}
         cls.view_func = None
         
-class companydetailsUrlTests(signupUrlTests): 
+class companydetailsUrlTests(UrlTests,TestCase): 
     @classmethod
     def setUpTestData(cls):
         cls.user = User.objects.create_user(email='test@email.com', password='123456')

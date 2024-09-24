@@ -1,14 +1,13 @@
-"""from django.test import TestCase
+from django.test import TestCase
 from ..models import Employee,User,Company
 from datetime import date
 
 class EmployeeModelTest(TestCase):
-    def setUp(self):
-        # Create a User instance
-        self.user = User.objects.create(email='test@email.com', password='123456')
-        # Create an Employee instance
-        self.employee = Employee.objects.create(
-            user=self.user,
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(email='test@email.com', password='123456')
+        cls.employee = Employee.objects.create(
+            user=cls.user,
             firstname='Mo',
             lastname='Soleman',
             dateOfBirth=date(2001, 1, 1),
@@ -46,12 +45,11 @@ class EmployeeModelTest(TestCase):
 
 
 class CompanyModelTest(TestCase):
-    def setUp(self):
-        # Create a User instance
-        self.user = User.objects.create(email='test@email.com', password='123456')
-        # Create an Company instance
-        self.company = Company.objects.create(
-            user=self.user,
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(email='test@email.com', password='123456')
+        cls.company = Company.objects.create(
+            user=cls.user,
             name='Company',
             city='Test City',
             phone='1234567890',
@@ -71,4 +69,3 @@ class CompanyModelTest(TestCase):
             ('Phone', '1234567890'),
         ]
         self.assertEqual(fields, expected_fields)
-"""
