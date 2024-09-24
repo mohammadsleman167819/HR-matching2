@@ -81,7 +81,7 @@ class EmployeeBaseForm(forms.ModelForm):
         if age < 16:
             raise ValidationError('You must be at least 16 years old to register.')
         if age > 80:
-            raise ValidationError(f'{age} years old is not a valid value.')
+            raise ValidationError('Sorry you must be under 80.')
         return data
 
     class Meta:

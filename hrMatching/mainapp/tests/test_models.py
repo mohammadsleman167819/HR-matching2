@@ -1,6 +1,9 @@
 from django.test import TestCase
 from ..models import Employee,User,Company
 from datetime import date
+#valid value for employee Date of Birth
+twenty_years_ago = date.today().replace(year=date.today().year - 20)
+
 
 class EmployeeModelTest(TestCase):
     @classmethod
@@ -10,7 +13,7 @@ class EmployeeModelTest(TestCase):
             user=cls.user,
             firstname='Mo',
             lastname='Soleman',
-            dateOfBirth=date(2001, 1, 1),
+            dateOfBirth=twenty_years_ago,
             gender='MALE',
             city='Test City',
             phone='1234567890',

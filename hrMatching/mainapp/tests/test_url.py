@@ -3,7 +3,7 @@ from django.urls import reverse, resolve
 from ..views import home,company,employee
 from ..models import Employee,User,Company
 from datetime import date
-
+from . import *
 class UrlTests(object):
     
     def test_url_status_code(self):
@@ -98,7 +98,7 @@ class employeeupdateUrlTests(UrlTests,TestCase):
             user=cls.user,
             firstname='Mo',
             lastname='Soleman',
-            dateOfBirth=date(2001, 1, 1),
+            dateOfBirth=twenty_years_ago ,
             gender='MALE',
             city='Test City',
             phone='1234567890',
@@ -147,7 +147,7 @@ class employeedetailsUrlTests(UrlTests,TestCase):
             user=cls.user,
             firstname='Mo',
             lastname='Soleman',
-            dateOfBirth=date(2001, 1, 1),
+            dateOfBirth=twenty_years_ago ,
             gender='MALE',
             city='Test City',
             phone='1234567890',

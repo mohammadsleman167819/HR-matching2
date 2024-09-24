@@ -4,6 +4,8 @@ from ..models import Employee,User,Company
 from datetime import date
 from django.urls import reverse, resolve
 import re
+from . import *
+
 
 class SignedinUserTests(object):
     
@@ -54,7 +56,7 @@ class UpdateViewTests(object):
             user=self.user2,
             firstname='Jo',
             lastname='Xien',
-            dateOfBirth=date(2002, 10, 1),
+            dateOfBirth=twenty_years_ago,
             gender='MALE',
             city='Test City2',
             phone='12345678902',
@@ -91,7 +93,7 @@ class EmployeeUpdateViewTests(TestCase,UpdateViewTests):
             user=cls.user,
             firstname='Mo',
             lastname='Soleman',
-            dateOfBirth=date(2001, 1, 1),
+            dateOfBirth=twenty_years_ago,
             gender='MALE',
             city='Test City',
             phone='1234567890',
@@ -106,7 +108,7 @@ class EmployeeUpdateViewTests(TestCase,UpdateViewTests):
         response = self.client.post(url, {
             'firstname': 'Mohammad',
             'lastname': 'Soleman',
-            'dateOfBirth': date(2001, 1, 1),
+            'dateOfBirth': twenty_years_ago,
             'gender':'MALE',
             'city':'Test City',
             'phone':'1234567890',
@@ -146,10 +148,10 @@ class CompanyUpdateViewTests(TestCase,UpdateViewTests):
         })
         self.assertRedirects(response, reverse(self.url_name, kwargs={'pk': self.company.pk, 'changed': 1}))
         
-        # Refresh the employee instance from the database
+        # Refresh the company instance from the database
         self.company.refresh_from_db()
 
-        # Check if the employee instance has been updated
+        # Check if the company instance has been updated
         self.assertEqual(self.company.name, 'Company Name')
 
 
