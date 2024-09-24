@@ -7,32 +7,43 @@ from .home import CustomUserCreationForm
 from django.core.exceptions import ValidationError
 
 
-# Base form class to handle common fields and logic
 class CompanyBaseForm(forms.ModelForm):
+    """
+    Base class for other Company From to extend
+
+    fields:
+        name,city,phone
+
+    methods:
+        clean_phone : make sure phone entered is all digits and '-' or '+'
+        add_helper_layout : define a basic layout for crispy forms
+    """
+
     name = forms.CharField(
         label="Company Name",
         max_length=100,
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
-    
+
     city = forms.CharField(
         label="City",
         max_length=50,
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
-    
+
     phone = forms.CharField(
         label="Phone",
         max_length=20,
         min_length=10,
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
-    
+
     def clean_phone(self):
         data = self.cleaned_data['phone']
+        msg = 'Phone number can only contain digits, hyphens, and plus signs.'
         for char in data:
             if not char.isdigit() and char not in '-+':
-                raise ValidationError('Phone number can only contain digits, hyphens, and plus signs.')
+                raise ValidationError(msg)
         return data
 
     class Meta:
@@ -53,12 +64,26 @@ class CompanyBaseForm(forms.ModelForm):
         )
 
 
-# Company Sign-Up Form
 class CompanySignUpForm(CustomUserCreationForm, CompanyBaseForm):
-    
+    """
+        SignUp as Company Form class
+
+        - extends CompanyBaseForm
+        - alter fields to add User Fields ( email , password)
+        - alter Layout to add User Fields ( email , password)
+
+        methods:
+            save:
+                - set user type flags
+                - create company object
+                - set OneToOne field with the created user
+    """
+
     class Meta(CustomUserCreationForm.Meta, CompanyBaseForm.Meta):
         model = User
-        fields = CustomUserCreationForm.Meta.fields + CompanyBaseForm.Meta.fields
+        user_fields = CustomUserCreationForm.Meta.fields
+        company_fields = CompanyBaseForm.Meta.fields
+        fields = user_fields + company_fields
 
     def __init__(self, *args, **kwargs):
         super(CompanySignUpForm, self).__init__(*args, **kwargs)
@@ -87,7 +112,7 @@ class CompanySignUpForm(CustomUserCreationForm, CompanyBaseForm):
         user.is_company = True
         user.is_employee = False
         user.save()
-        company = Company.objects.create(
+        Company.objects.create(
             user=user,
             name=self.cleaned_data['name'],
             city=self.cleaned_data['city'],
@@ -96,9 +121,9 @@ class CompanySignUpForm(CustomUserCreationForm, CompanyBaseForm):
         return user
 
 
-# Company Update Form
 class CompanyUpdateForm(CompanyBaseForm):
-    
+    """Update Company User info Form_Class, extends CompanyBaseForm"""
+
     class Meta(CompanyBaseForm.Meta):
         model = Company
 
