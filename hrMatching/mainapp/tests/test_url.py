@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.urls import resolve, reverse
 
-from ..models import Company, Employee, User
-from ..views import company, employee, home
+from ..models import Company, Employee, User, Job_Post
+from ..views import company, employee, home, job_post
 from . import twenty_years_ago
 
 
@@ -193,3 +193,35 @@ class companydetailsUrlTests(UrlTests, TestCase):
         cls.template = "mainapp/company/company_detail.html"
         cls.args = {"pk": cls.company.pk}
         cls.view_func = None
+
+class job_post_detailsUrlTests(UrlTests, TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
+            email="test@email.com",
+            password="123456"
+        )
+
+        cls.company = Company.objects.create(
+            user=cls.user,
+            name="Company",
+            city="Test City",
+            phone="1234567890",
+        )
+
+        cls.post = Job_Post.objects.create(
+            company = cls.company,
+            job_title = "Backend",
+            jobDescription = "Backend developer needed",
+            workhours = "Full time",
+            contact = "hr@mail.com",
+            city = "Damascus",
+            salary = "30K",
+        )
+
+        cls.name = "job_post_detail"
+        cls.url = f"job_post/{cls.post.job_id}/details"
+        cls.template = "mainapp/job_post/job_post_detail.html"
+        cls.view_class = job_post.Job_PostDetailView
+        cls.view_func = None
+        cls.args = {'pk' : cls.post.job_id}

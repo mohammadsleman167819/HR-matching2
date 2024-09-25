@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import home, company, employee
+from .views import home, company, employee, job_post
 
 urlpatterns = [
     path("", home.index, name="index"),
@@ -28,5 +28,38 @@ urlpatterns += [
         "company/<int:pk>/details",
         company.CompanyDetailView.as_view(),
         name="company_detail",
+    ),
+]
+
+urlpatterns += [
+    path(
+        "job_post/create",
+        job_post.Job_PostCreateView.as_view(),
+        name="job_post_create",
+    ),
+    path(
+        "job_post/<int:pk>/update/<int:changed>",
+        job_post.Job_PostUpdateView.as_view(),
+        name="job_post_update",
+    ),
+    path(
+        "job_post/<int:pk>/details",
+        job_post.Job_PostDetailView.as_view(),
+        name="job_post_detail"
+    ),
+    path(
+        "job_post/list",
+        job_post.Job_PostListView.as_view(),
+        name="job_post_list"
+    ),
+    path(
+        "job_post/list/mine",
+        job_post.CompanyJob_PostListView.as_view(),
+        name="company_job_post_list"
+    ),
+    path(
+        "job_post/<int:pk>/delete",
+        job_post.Job_PostDeleteView.as_view(),
+        name="job_post_delete"
     ),
 ]

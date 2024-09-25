@@ -207,3 +207,81 @@ class Company(models.Model):
             for field in self._meta.fields
             if field.verbose_name not in ["user"]
         ]
+
+
+class Job_Post(models.Model):
+    job_id = models.BigAutoField(primary_key=True)
+    job_title = models.CharField(
+        "Job Title",
+        max_length=350
+        )
+    company = models.ForeignKey(
+        Company,
+        on_delete=models.CASCADE
+        )
+    jobDescription  = models.TextField(
+        "Job Description",
+        max_length=5000
+        )
+    workhours = models.TextField(
+        "Work Hours",
+        max_length=1000
+        )
+    contact = models.CharField(
+        "Contact",
+        max_length=50
+        )
+    city = models.CharField(
+        "City",
+        max_length=50
+        )
+    salary = models.CharField(
+        "Salary",
+        max_length=50
+        )
+    cluster =  models.IntegerField(
+        "Cluster",
+        null=True,
+        blank=True
+        )
+    added_date = models.DateField(
+        "Added on",
+        auto_now_add=True
+        )
+    clusterable_text = models.TextField(
+        "Clusterable Text",
+        null=True,blank=True)
+
+    class Meta:
+        verbose_name = 'Job Post'
+        ordering = ['-job_id']
+
+    def get_absolute_url(self):
+        """Returns the URL to access a particular instance of Job_Post."""
+        return reverse('job_post_detail',  kwargs={"pk": self.job_id})
+
+    def __str__(self):
+        """String for representing the Job_POst object (in Admin site etc.)."""
+        return self.job_title + " by " + self.company.name
+
+    def get_fields(self):
+        """return fields (name,value) we want to show in Job Post detail page"""
+        fields = []
+        for field in self._meta.fields:
+            if field.verbose_name not in [
+                "job_id",
+                "company",
+                "Clusterable Text",
+                "Cluster",
+            ]:
+                val = field.value_from_object(self)
+                if val is None:
+                    val = ""
+                info = (field.verbose_name, val)
+                fields.append(info)
+            if field.verbose_name in ["company"]:
+                company = field.value_from_object(self)
+                company_obj = Company.objects.get(user = company)
+                info = ("Company", company_obj)
+                fields.append(info)
+        return fields
