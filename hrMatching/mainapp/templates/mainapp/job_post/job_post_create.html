@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Create Job Post{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Create Job Post</h2>
+    {% crispy form%}
+</div>
+{% endblock %}

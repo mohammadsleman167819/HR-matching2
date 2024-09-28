@@ -2,7 +2,7 @@ from datetime import date
 
 # valid value for employee Date of Birth
 twenty_years_ago = date.today().replace(year=date.today().year - 20)
-
+today = date.today()
 employee_data = {
     "email": "test@example.com",
     "password1": "strongpassword123",

@@ -21,17 +21,23 @@
                     <li class="nav-item">
                         <a class="navbar-brand" href="#">About</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="{%url 'job_post_list'%}">Job Posts</a>
+                    </li>
                     {% if user.is_authenticated %}
 
                         {% if user.is_company %}
                         <li class="nav-item">
                             <a class="navbar-brand" href="{%url 'company_update' user.id 0 %}">My Profile</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="navbar-brand" href="{%url 'job_post_company_list'%}">My Job Posts</a>
+                        </li>
                         {% elif user.is_employee %}
                         <li class="nav-item">
                             <a class="navbar-brand" href="{%url 'employee_update' user.id 0 %}">My Profile</a>
                         </li>
-                      
+
                         {%endif%}
                     <li class="nav-item">
                         <form id="logout-form" method="post" action="{% url 'logout' %}">
@@ -46,8 +52,8 @@
                     <li class="nav-item">
                         <a class="navbar-brand" href="{% url 'signup' %}">signup</a>
                     </li>
-                  
-                    
+
+
                     {%endif%}
 
                 </ul>
