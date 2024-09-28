@@ -54,8 +54,8 @@ urlpatterns += [
     ),
     path(
         "job_post/list/mine",
-        job_post.CompanyJob_PostListView.as_view(),
-        name="company_job_post_list"
+        job_post.Job_Post_Company_ListView.as_view(),
+        name="job_post_company_list"
     ),
     path(
         "job_post/<int:pk>/delete",

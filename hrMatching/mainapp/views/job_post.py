@@ -5,7 +5,7 @@ from ..forms.job_post import Job_PostUpdateForm, Job_PostCreateForm
 from django.shortcuts import reverse
 from django.urls import reverse_lazy
 
-class Job_PostCreateView(CreateView):
+class Job_PostCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     """View to create a Job_Post"""
     model = Job_Post
     form_class = Job_PostCreateForm
@@ -14,6 +14,10 @@ class Job_PostCreateView(CreateView):
     def form_valid(self, form):
         form.instance.company = Company.objects.get(user = self.request.user)
         return super().form_valid(form)
+
+    def test_func(self):
+        return self.request.user.is_company
+
 
 
 class Job_PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -51,10 +55,10 @@ class Job_PostListView(ListView):
     model = Job_Post
     context_object_name = 'Job_Post_list'
     template_name = "mainapp/job_post/job_post_list.html"
-    paginate_by = 10
+    paginate_by = 9
 
 
-class CompanyJob_PostListView(LoginRequiredMixin, UserPassesTestMixin, Job_PostListView):
+class Job_Post_Company_ListView(LoginRequiredMixin, UserPassesTestMixin, Job_PostListView):
     """view to list Job Posts for one company"""
     def get_queryset(self):
         company = Company.objects.get(user=self.request.user)
@@ -64,8 +68,13 @@ class CompanyJob_PostListView(LoginRequiredMixin, UserPassesTestMixin, Job_PostL
         return self.request.user.is_company
 
 
-class Job_PostDeleteView(DeleteView):
+class Job_PostDeleteView(DeleteView,LoginRequiredMixin, UserPassesTestMixin,):
     model = Job_Post
     template_name = "mainapp/job_post/job_post_delete.html"
-    success_url = reverse_lazy('company_job_post_list')
+    success_url = reverse_lazy('job_post_company_list')
+
+    def test_func(self):
+        user_is_company = self.request.user.is_company
+        user_own_post = self.get_object().company.user.id == self.request.user.id
+        return user_is_company and user_own_post
 

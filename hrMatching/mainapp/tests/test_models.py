@@ -1,6 +1,6 @@
 from django.test import TestCase
 from ..models import Company, Employee, User, Job_Post
-from . import twenty_years_ago
+from . import twenty_years_ago, today
 
 
 class EmployeeModelTest(TestCase):
@@ -115,3 +115,17 @@ class Job_PostModelTest(TestCase):
             self.post.get_absolute_url(),
             f"/job_post/{self.post.job_id}/details"
         )
+
+    def test_get_fields(self):
+        fields = self.post.get_fields()
+        expected_fields = [
+            ("Job Title", "Backend"),
+            ("Company",self.company),
+            ("Job Description", "Backend developer needed"),
+            ("Work Hours", "Full time"),
+            ("Contact", "hr@mail.com"),
+            ("City", "Damascus"),
+            ("Salary", "30K"),
+            ("Added on",today)
+        ]
+        self.assertEqual(fields, expected_fields)
